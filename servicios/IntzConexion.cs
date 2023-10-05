@@ -1,16 +1,13 @@
 ﻿using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EjercicioConexionbdCRUD.servicios
+namespace EjercicioConexionbdCRUD.servicios 
 {
     public interface IntzConexion
     {
-        // Método para generar la conexión con la base de datos
+        /// <summary>
+        /// Genera una conexión a la base de datos utilizando la implementación específica de la clase que implemente esta interfaz.
+        /// </summary>
+        /// <returns>Objeto NpgsqlConnection que representa la conexión a la base de datos.</returns>
         NpgsqlConnection GeneraConexion();
     }
 }

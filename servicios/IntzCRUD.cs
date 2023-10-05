@@ -1,26 +1,39 @@
 ﻿using EjercicioConexionbdCRUD.entidades;
 using Npgsql;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace EjercicioConexionbdCRUD.servicios
 {
     public interface IntzCRUD
     {
-        // Método para seleccionar libros
+        /// <summary>
+        /// Método para seleccionar libros de la base de datos.
+        /// </summary>
+        /// <param name="conexionGenerada">Objeto NpgsqlConnection que representa la conexión a la base de datos.</param>
+        /// <returns>Lista de objetos LibroDto que representan los libros seleccionados.</returns>
         List<LibroDto> SeleccionaLibros(NpgsqlConnection conexionGenerada);
 
-        // Método para insertar libros
+        /// <summary>
+        /// Método para insertar libros en la base de datos.
+        /// </summary>
+        /// <param name="conexionGenerada">Objeto NpgsqlConnection que representa la conexión a la base de datos.</param>
+        /// <returns>Lista de objetos LibroDto que representan los libros insertados.</returns>
         List<LibroDto> InsertarLibros(NpgsqlConnection conexionGenerada);
 
-        // Método para modificar libros
+        /// <summary>
+        /// Método para modificar libros en la base de datos.
+        /// </summary>
+        /// <param name="conexionGenerada">Objeto NpgsqlConnection que representa la conexión a la base de datos.</param>
+        /// <returns>Lista de objetos LibroDto que representan los libros modificados.</returns>
         List<LibroDto> ModificarLibros(NpgsqlConnection conexionGenerada);
 
-        // Método para eliminar libros
+        /// <summary>
+        /// Método para eliminar libros de la base de datos.
+        /// </summary>
+        /// <param name="conexionGenerada">Objeto NpgsqlConnection que representa la conexión a la base de datos.</param>
+        /// <returns>Lista de objetos LibroDto que representan los libros eliminados.</returns>
         List<LibroDto> EliminarLibros(NpgsqlConnection conexionGenerada);
     }
 }
+

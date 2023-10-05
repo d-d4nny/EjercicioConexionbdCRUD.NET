@@ -3,14 +3,15 @@ using EjercicioConexionbdCRUD.utils;
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace EjercicioConexionbdCRUD.servicios
 {
+
+    /// <summary>
+    /// Implementación de operaciones CRUD (Create, Read, Update, Delete) para la entidad Libro.
+    /// </summary>
+
     public class ImplCRUD : IntzCRUD
     {
 
@@ -19,39 +20,51 @@ namespace EjercicioConexionbdCRUD.servicios
         ADto adto = new ADto();
         List<LibroDto> listaLibros = new List<LibroDto>();
 
+        // Métodos para la operación de selección
+
+        /// <summary>
+        /// Permite seleccionar libros desde la base de datos.
+        /// </summary>
+        /// <param name="conexionGenerada">Conexión a la base de datos.</param>
+        /// <returns>Lista de libros seleccionados.</returns>
+
         public List<LibroDto> SeleccionaLibros(NpgsqlConnection conexionGenerada)
         {
-            bool cerrarMenu = false;
-            int opcion;
+            bool cerrarMenu = false; // Variable para controlar la salida del bucle del menú
+            int opcion; // Variable para almacenar la opción elegida por el usuario
 
             try
             {
                 do
                 {
-                    intM.MostrarMenuSelect();
+                    intM.MostrarMenuSelect(); // Mostrar el menú de selección
                     Console.WriteLine("Introduce una opción: ");
-                    opcion = Convert.ToInt32(Console.ReadLine());
+                    opcion = Convert.ToInt32(Console.ReadLine()); // Leer la opción del usuario
 
                     switch (opcion)
                     {
                         case 1:
                             try
                             {
+                                // Consulta SQL para seleccionar todos los libros de la base de datos
                                 NpgsqlCommand comandoSQL = new NpgsqlCommand("SELECT * FROM gbp_almacen.gbp_alm_cat_libros", conexionGenerada);
-                                NpgsqlDataReader lector = comandoSQL.ExecuteReader();
+                                NpgsqlDataReader lector = comandoSQL.ExecuteReader(); // Ejecutar la consulta
 
-                                listaLibros = adto.ResultsALibrosDto(lector);
+                                listaLibros = adto.ResultsALibrosDto(lector); // Convertir resultados a objetos LibroDto
 
+                                // Mostrar los títulos de los libros
                                 int i = listaLibros.Count;
                                 for (int cont = 0; cont < i; cont++)
                                 {
                                     Console.WriteLine(listaLibros[cont].QueryBase());
                                 }
 
+                                // Solicitar al usuario que seleccione un libro por su ID
                                 Console.Write("Selecciona el ID del libro que quieres mostrar: ");
                                 long selectLibro = Convert.ToInt64(Console.ReadLine());
 
                                 bool libroEncontrado = false;
+                                // Mostrar detalles del libro seleccionado
                                 foreach (LibroDto libro in listaLibros)
                                 {
                                     if (libro.IdLibro == selectLibro)
@@ -67,6 +80,7 @@ namespace EjercicioConexionbdCRUD.servicios
                                     }
                                 }
 
+                                // Mostrar mensaje si no se encontró un libro con el ID proporcionado
                                 if (!libroEncontrado)
                                 {
                                     Console.WriteLine("No se encontró un libro con el ID proporcionado.");
@@ -77,17 +91,19 @@ namespace EjercicioConexionbdCRUD.servicios
                             catch (NpgsqlException e)
                             {
                                 Console.WriteLine("[ERROR] Error generando o ejecutando el comando SQL: " + e);
-                                return listaLibros;
+                                return listaLibros; // Devolver la lista de libros actualizada
                             }
                             break;
                         case 2:
                             try
                             {
+                                // Consulta SQL para seleccionar todos los libros de la base de datos
                                 NpgsqlCommand comandoSQL = new NpgsqlCommand("SELECT * FROM gbp_almacen.gbp_alm_cat_libros", conexionGenerada);
-                                NpgsqlDataReader lector = comandoSQL.ExecuteReader();
+                                NpgsqlDataReader lector = comandoSQL.ExecuteReader(); // Ejecutar la consulta
 
-                                listaLibros = adto.ResultsALibrosDto(lector);
+                                listaLibros = adto.ResultsALibrosDto(lector); // Convertir resultados a objetos LibroDto
 
+                                // Mostrar detalles de los libros
                                 int i = listaLibros.Count;
                                 for (int cont = 0; cont < i; cont++)
                                 {
@@ -99,18 +115,18 @@ namespace EjercicioConexionbdCRUD.servicios
                             catch (NpgsqlException e)
                             {
                                 Console.WriteLine("[ERROR] Error generando o ejecutando el comando SQL: " + e);
-                                return listaLibros;
+                                return listaLibros; // Devolver la lista de libros actualizada
                             }
                             break;
                         case 3:
-                            cerrarMenu = true;
+                            cerrarMenu = true; // Cerrar el menú
                             break;
                         default:
                             Console.WriteLine("\n**[ERROR] Opción elegida no disponible **");
                             break;
                     }
 
-                } while (!cerrarMenu);
+                } while (!cerrarMenu); // Continuar hasta que el usuario decida cerrar el menú
             }
             catch (FormatException e)
             {
@@ -121,22 +137,29 @@ namespace EjercicioConexionbdCRUD.servicios
                 Console.WriteLine("\n**[ERROR] Ocurrió una excepción no esperada: " + e.Message + " **");
             }
 
-            return listaLibros;
+            return listaLibros; // Devolver la lista de libros actualizada
         }
 
+        // Métodos para la operación de inserción
+
+        /// <summary>
+        /// Permite insertar libros en la base de datos.
+        /// </summary>
+        /// <param name="conexionGenerada">Conexión a la base de datos.</param>
+        /// <returns>Lista de libros insertados.</returns>
 
         public List<LibroDto> InsertarLibros(NpgsqlConnection conexionGenerada)
         {
-            bool cerrarMenu = false;
-            int opcion;
+            bool cerrarMenu = false; // Variable para controlar la salida del bucle del menú
+            int opcion; // Variable para almacenar la opción elegida por el usuario
 
             try
             {
                 do
                 {
-                    intM.MostrarMenuInsert();
+                    intM.MostrarMenuInsert(); // Mostrar el menú de inserción
                     Console.WriteLine("Introduce una opción: ");
-                    opcion = Convert.ToInt32(Console.ReadLine());
+                    opcion = Convert.ToInt32(Console.ReadLine()); // Leer la opción del usuario
 
                     switch (opcion)
                     {
@@ -156,12 +179,14 @@ namespace EjercicioConexionbdCRUD.servicios
 
                             try
                             {
+                                // Query de inserción para un solo libro
                                 string query = $"INSERT INTO gbp_almacen.gbp_alm_cat_libros (titulo, autor, isbn, edicion) VALUES ('{titulo}', '{autor}', '{isbn}', {edicion})";
 
                                 using (var comandoSQL = new NpgsqlCommand(query, conexionGenerada))
                                 {
                                     int filasAfectadas = comandoSQL.ExecuteNonQuery();
 
+                                    // Mostrar el resultado de la inserción
                                     if (filasAfectadas > 0)
                                     {
                                         Console.WriteLine("Nuevo libro agregado exitosamente.");
@@ -207,6 +232,7 @@ namespace EjercicioConexionbdCRUD.servicios
                                 {
                                     foreach (LibroDto libro in listaLibros)
                                     {
+                                        // Query de inserción para múltiples libros
                                         string query = $"INSERT INTO gbp_almacen.gbp_alm_cat_libros (titulo, autor, isbn, edicion) VALUES ('{libro.Titulo}', '{libro.Autor}', '{libro.Isbn}', {libro.Edicion})";
                                         comandoSQL.CommandText = query;
                                         comandoSQL.ExecuteNonQuery();
@@ -222,15 +248,14 @@ namespace EjercicioConexionbdCRUD.servicios
 
                             break;
                         case 3:
-                            cerrarMenu = true;
+                            cerrarMenu = true; // Cerrar el menú
                             break;
                         default:
                             Console.WriteLine("\n**[ERROR] Opción elegida no disponible **");
                             break;
                     }
 
-                } while (!cerrarMenu);
-
+                } while (!cerrarMenu); // Continuar hasta que el usuario decida cerrar el menú
             }
             catch (FormatException e)
             {
@@ -241,8 +266,16 @@ namespace EjercicioConexionbdCRUD.servicios
                 Console.WriteLine("\n**[ERROR] Ocurrió una excepción no esperada: " + e.Message + " **");
             }
 
-            return listaLibros;
+            return listaLibros; // Devolver la lista de libros actualizada
         }
+
+        // Métodos para la operación de modificación
+
+        /// <summary>
+        /// Permite modificar libros en la base de datos.
+        /// </summary>
+        /// <param name="conexionGenerada">Conexión a la base de datos.</param>
+        /// <returns>Lista de libros modificados.</returns>
 
         public List<LibroDto> ModificarLibros(NpgsqlConnection conexionGenerada)
         {
@@ -356,6 +389,14 @@ namespace EjercicioConexionbdCRUD.servicios
 
             return listaLibros;
         }
+
+        // Métodos para la operación de eliminación
+
+        /// <summary>
+        /// Permite eliminar libros de la base de datos.
+        /// </summary>
+        /// <param name="conexionGenerada">Conexión a la base de datos.</param>
+        /// <returns>Lista de libros eliminados.</returns>
 
         public List<LibroDto> EliminarLibros(NpgsqlConnection conexionGenerada)
         {
